@@ -1,4 +1,6 @@
 let path = require('path');
+
+
 module.exports = {
     mode: "development", //production development
     entry: "./src/index.js", // 入口
