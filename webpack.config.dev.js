@@ -7,6 +7,11 @@ module.exports = {
     output: {
         filename: "bundle.js", // 打包后的文件名
         path: path.resolve(__dirname, 'dist')  //路径必须是一个绝对路径
+    },
+    devServer: { //开发服务器配置
+        contentBase: './build',
+        port: 2002,
+        progress: true
     }
     
 }
