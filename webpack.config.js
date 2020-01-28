@@ -1,6 +1,6 @@
 let path = require("path");
 let HtmlWebpackPlugin = require("html-webpack-plugin");
-
+let MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   devServer: {
     port: 3000,
@@ -25,9 +25,12 @@ module.exports = {
         collapseWhitespace: true
       },
       hash: true
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'main.css'
     })
   ],
-  module: {
+  module: { // 模块
     //less less-loader
     //node-sass sass-loader
     //stylus  stylus-loader
@@ -35,37 +38,34 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          // style-loader
+          MiniCssExtractPlugin.loader,
+          "css-loader",
           {
-            loader: "style-loader",
+            loader: 'postcss-loader',
             options: {
-              insert: function insertAtTop(element) {
-                var parent = document.querySelector("head");
-                var lastInsertedElement =
-                  window._lastElementInsertedByStyleLoader;
-
-                if (!lastInsertedElement) {
-                  parent.insertBefore(element, parent.firstChild);
-                } else if (lastInsertedElement.nextSibling) {
-                  parent.insertBefore(element, lastInsertedElement.nextSibling);
-                } else {
-                  parent.appendChild(element);
-                }
-
-                window._lastElementInsertedByStyleLoader = element;
-              }
+              ident: 'postcss',
+              plugins: [
+                require('autoprefixer')
+              ]
             }
-          },
-          // css-loader
-          {
-            loader: "css-loader"
-          },
+          }
         ]
       }, 
       {
         test: /\.less$/,
         use: [
-          'style-loader', 'css-loader', 'less-loader'
+          MiniCssExtractPlugin.loader,
+           'css-loader',
+           {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [
+                require('autoprefixer')
+              ]
+            }
+          },
+           'less-loader'
         ]
       }
     ]
