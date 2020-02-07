@@ -1,0 +1,251 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>kim下载</title>
+  </head>
+  <style>
+  
+  body {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  font-family: quote, "Roboto", "Helvetica Neue", Helvetica, Arial,
+    "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN",
+    "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;
+}
+
+.kim-download-wrap {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  overflow: auto;
+}
+
+.kim-download-wrap .header {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 12px 8px 0px rgba(239, 239, 239, 0.1),
+    0px 2px 4px 0px rgba(45, 45, 45, 0.3);
+}
+
+.kim-download-wrap .content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.kim-download-wrap .content .inner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 192px;
+}
+
+.kim-download-wrap .content .inner-wrap h2 {
+  line-height: 48px;
+  margin: 80px 0 100px;
+  font-size: 48px;
+  font-weight: 400;
+}
+
+.kim-download-wrap .content .download-guide-list {
+  display: flex;
+  position: absolute;
+  bottom: -124px;
+}
+
+.download-guide-list .guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  width: 220px;
+  height: 256px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 1px 17px 1px rgba(223, 229, 235, 0.71);
+  border-radius: 4px;
+  margin: 20px;
+}
+.download-guide-list .icon-wrap {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 46px;
+}
+
+.download-guide-list .qrcode-img {
+  display: none;
+  padding-top: 20px;
+}
+
+.download-guide-list .guide .title {
+  padding-top: 23px;
+  color: #757575;
+  line-height: 18px;
+}
+
+.download-guide-list .guide .detail {
+  color: #8b8b8b;
+  padding-top: 14px;
+}
+
+.download-guide-list .guide a {
+  color: #4f7cff;
+  cursor: pointer;
+  padding-top: 28px;
+}
+
+.kim-download-wrap .footer {
+  flex: 1;
+  background: #f6f6f6;
+  min-height: 375px;
+}
+  </style>
+  <body>
+    <div class="kim-download-wrap">
+      <div class="header">
+        <img
+          srcset="/kimDownload/kim-logo.png, /kimDownload/kim-logo@2x.png 2x"
+        />
+      </div>
+      <div class="content">
+        <div class="inner-wrap">
+          <h2>下载立即使用KIM沟通协作</h2>
+          <img srcset="/kimDownload/ad.png, /kimDownload/ad@2x.png 2x" />
+        </div>
+        <div class="download-guide-list">
+          <div class="guide windows">
+            <div class="icon-wrap">
+              <img
+                class="guide-icon"
+                srcset="/kimDownload/win.png, /kimDownload/win@2x.png 2x"
+              />
+            </div>
+            <div class="title">PC</div>
+            <div class="detail" onclick="downloadWin()">win7/8/10 系统下载</div>
+            <a>下载</a>
+          </div>
+          <div class="guide mac">
+            <div class="icon-wrap">
+              <img
+                class="guide-icon"
+                srcset="/kimDownload/mac.png, /kimDownload/mac@2x.png 2x"
+              />
+            </div>
+            <div class="title">Mac</div>
+            <div class="detail">OS X 系统下载</div>
+            <a>下载</a>
+          </div>
+          <div class="guide ios">
+            <div id="iosQrcode" class="qrcode-img js-ios-qr"></div>
+            <div class="icon-wrap js-ios-hidden">
+              <img
+                class="guide-icon"
+                srcset="/kimDownload/ios.png, /kimDownload/ios@2x.png 2x"
+              />
+            </div>
+            <div class="title">iPhone</div>
+            <div class="detail js-ios-hidden">IOS 系统下载</div>
+            <a class="js-ios-hidden" onclick="handleIOS()">扫一扫下载</a>
+          </div>
+          <div class="guide android">
+            <div id="androidQrcode" class="qrcode-img js-android-qr"></div>
+            <div class="icon-wrap js-android-hidden">
+              <img
+                class="guide-icon"
+                srcset="
+                  /kimDownload/android.png,
+                  /kimDownload/android@2x.png 2x
+                "
+              />
+            </div>
+            <div class="title">Android</div>
+            <div class="detail js-android-hidden">Android 系统下载</div>
+            <a class="js-android-hidden" onclick="handleAndroid()"
+              >扫一扫下载</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </body>
+  <script type="text/javascript" src="/kimDownload/qrcode.min.js"></script>
+  <script type="text/javascript">
+
+      function getDownloadUrl(callback) {
+        'use strict';
+
+        var url = `http://bjfk-staging-ls46.yz02:8090/api/app/download`;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+          'use strict';
+          
+          if (this.status != 200) { 
+            alert(`Error ${this.status}-${this.statusText} : ${this.responseText}`);
+          } else {
+            var jsonResponse = JSON.parse(this.response);
+            console.log(this);
+            console.log(jsonResponse)
+            callback();
+          }
+        } 
+
+        xhttp.onerror = function(e) {
+          'use strict';
+          alert(`Request onerror ${this.status}: ${this.statusText}`);
+        }
+        xhttp.open("GET", url, true);
+        xhttp.send();	
+      }
+    function downloadWin() {
+      getDownloadUrl(function (url) {
+
+      })
+    }
+
+    function handleIOS() {
+      var els = document.getElementsByClassName("js-ios-hidden");
+      var i;
+      for (i = 0; i < els.length; i++) {
+        els[i].style.display = "none";
+      }
+      new QRCode(document.getElementById("iosQrcode"), {
+        text: "https://itunes.apple.com/cn/app/kem/id1451160242?mt=8",
+        width: 180,
+        height: 180
+      });
+      document.getElementById("iosQrcode").style.display = "block";
+    }
+
+    function handleAndroid() {
+      var els = document.getElementsByClassName("js-android-hidden");
+      var i;
+      for (i = 0; i < els.length; i++) {
+        els[i].style.display = "none";
+      }
+      new QRCode(document.getElementById("androidQrcode"), {
+        text: "https://itunes.apple.com/cn/app/kem/id1451160242?mt=8",
+        width: 180,
+        height: 180
+      });
+      document.getElementById("androidQrcode").style.display = "block";
+    }
+  </script>
+</html>
