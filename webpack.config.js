@@ -1,6 +1,7 @@
 let path = require("path");
 let HtmlWebpackPlugin = require("html-webpack-plugin");
 let MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 module.exports = {
   devServer: {
     port: 3000,
@@ -28,7 +29,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'main.css'
-    })
+    }),
   ],
   module: { // 模块
     //less less-loader
@@ -67,7 +68,26 @@ module.exports = {
           },
            'less-loader'
         ]
-      }
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ]
   }
 };
